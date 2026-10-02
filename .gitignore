@@ -1,0 +1,69 @@
+# ---- Secrets and credentials ----
+# Never commit real credentials. Per-project .gitignore files also cover these.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+key.properties
+**/*.keystore
+**/*.jks
+
+# ---- Node / Next.js (dashboard, website) ----
+node_modules/
+.next/
+out/
+.turbo/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- Python ----
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ---- Flutter / Dart ----
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
+*.iml
+.idea/
+.vscode/
+
+# ---- Gradle / Android ----
+.gradle/
+local.properties
+captures/
+.cxx/
+
+# ---- Generated site assets that are large binaries ----
+# The service-category placeholder photos are tracked on purpose, but keep any
+# future large exports out of history.
+*.apk
+*.aab
+*.ipa
+
+# ---- Nested repository ----
+# backend/ is its own Git repository with its own history and remote
+# (https://github.com/angeliqueeumwali/homecare-platform-backend.git).
+# It is versioned independently; see README or `git -C backend log`.
+backend/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
