@@ -107,3 +107,9 @@ class ServiceRequest(Base):
         "Issue",
         back_populates="service_request",
     )
+
+    images = relationship(
+        "ServiceRequestImage",
+        back_populates="service_request",
+        cascade="all, delete-orphan",
+    )

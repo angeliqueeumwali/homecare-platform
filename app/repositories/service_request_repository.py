@@ -11,7 +11,11 @@ class ServiceRequestRepository:
         for item in items:
             db.add(item)
         await db.commit()
-        await db.refresh(request)
+        # Refresh the relationships explicitly. A plain refresh() only reloads
+        # column attributes, so `items` would be left unloaded and the response
+        # serializer would attempt a lazy load, which raises MissingGreenlet
+        # under the async session.
+        await db.refresh(request, attribute_names=["items"])
         return request
 
     @staticmethod

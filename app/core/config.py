@@ -29,6 +29,28 @@ class Settings:
         )
     )
 
+    MAX_IMAGES_PER_REQUEST = int(
+        os.getenv(
+            "MAX_IMAGES_PER_REQUEST",
+            "5",
+        )
+    )
+
+    MAX_IMAGE_UPLOAD_BYTES = int(
+        os.getenv(
+            "MAX_IMAGE_UPLOAD_BYTES",
+            str(5 * 1024 * 1024),
+        )
+    )
+
+    @property
+    def max_images_per_request(self) -> int:
+        return self.MAX_IMAGES_PER_REQUEST
+
+    @property
+    def max_image_upload_bytes(self) -> int:
+        return self.MAX_IMAGE_UPLOAD_BYTES
+
     @property
     def database_url(self) -> str:
         return (

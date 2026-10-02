@@ -50,7 +50,9 @@ async def test_create_service_request():
     db.add.assert_any_call(items[0])
     db.add.assert_any_call(items[1])
     db.commit.assert_awaited_once()
-    db.refresh.assert_awaited_once_with(request)
+    # items is refreshed explicitly: a bare refresh() leaves the relationship
+    # unloaded, and the response serializer would then raise MissingGreenlet.
+    db.refresh.assert_awaited_once_with(request, attribute_names=["items"])
 
 
 @pytest.mark.asyncio

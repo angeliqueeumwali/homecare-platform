@@ -23,7 +23,7 @@ async def get_category(category_id, db=Depends(get_db)):
 @router.post("", response_model=ServiceCategoryResponse, status_code=201)
 async def create_category(data: ServiceCategoryCreate, db=Depends(get_db), _: object = Depends(admin)):
     try:
-        return await ServiceCategoryService.create(db, data.name, data.description)
+        return await ServiceCategoryService.create(db, data.name, data.description, data.image_url)
     except ValueError as e:
         raise HTTPException(400, str(e))
 
@@ -31,7 +31,7 @@ async def create_category(data: ServiceCategoryCreate, db=Depends(get_db), _: ob
 async def update_category(category_id, data: ServiceCategoryUpdate, db=Depends(get_db), _: object = Depends(admin)):
     try:
         category = await ServiceCategoryService.get(db, category_id)
-        return await ServiceCategoryService.update(db, category, data.name, data.description, data.is_active)
+        return await ServiceCategoryService.update(db, category, data.name, data.description, data.image_url, data.is_active)
     except ValueError as e:
         raise HTTPException(400, str(e))
 
