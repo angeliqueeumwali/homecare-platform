@@ -42,7 +42,7 @@ describe("Services page", () => {
     expect(screen.getByText("Cleaning")).toBeInTheDocument();
     expect(screen.getByText("Repairs and installations")).toBeInTheDocument();
     expect(
-      screen.getAllByRole("link", { name: /view details/i }).length
+      screen.getAllByRole("link", { name: /view service/i }).length
     ).toBeGreaterThan(0);
   });
 

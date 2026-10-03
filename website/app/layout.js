@@ -7,6 +7,9 @@ export const metadata = {
   title: "Homecare Platform",
   description:
     "Request trusted home services in your neighborhood",
+  icons: {
+    icon: "/images/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "./AuthProvider";
@@ -17,17 +18,39 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  function navigate(href) {
+    setMenuOpen(false);
+    if (href) {
+      router.push(href);
+    }
+  }
 
   return (
     <header className="navbar">
       <div className="container navbar-inner">
-        <Link className="navbar-brand" href="/">
+        <Link className="navbar-brand" href="/" onClick={() => setMenuOpen(false)}>
           <span className="brand-mark" aria-hidden="true">
             HC
           </span>
           Homecare
         </Link>
-        <nav aria-label="Main">
+        <button
+          type="button"
+          className="menu-toggle"
+          aria-expanded={menuOpen}
+          aria-controls="primary-nav"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span className="hamburger" aria-hidden="true" />
+        </button>
+        <nav
+          id="primary-nav"
+          className={`primary-nav${menuOpen ? " open" : ""}`}
+          aria-label="Main"
+        >
           <ul className="navbar-links">
             {LINKS.map((link) => (
               <li key={link.href}>
@@ -39,6 +62,7 @@ export default function Navbar() {
                   aria-current={
                     pathname === link.href ? "page" : undefined
                   }
+                  onClick={() => setMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
@@ -55,6 +79,7 @@ export default function Navbar() {
                 className="btn btn-outline btn-sm"
                 onClick={() => {
                   logout();
+                  setMenuOpen(false);
                   router.push("/");
                 }}
               >

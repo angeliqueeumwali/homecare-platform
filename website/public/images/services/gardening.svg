@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EAF6EF"/>
+      <stop offset="1" stop-color="#D3EBDE"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="520" fill="url(#bg)"/>
+  <circle cx="400" cy="255" r="178" fill="#FFFFFF" opacity="0.55"/>
+  <circle cx="238" cy="140" r="42" fill="#F2CC8F"/>
+  <g stroke="#F2CC8F" stroke-width="9" stroke-linecap="round">
+    <line x1="238" y1="66" x2="238" y2="86"/>
+    <line x1="238" y1="194" x2="238" y2="214"/>
+    <line x1="164" y1="140" x2="184" y2="140"/>
+    <line x1="292" y1="140" x2="312" y2="140"/>
+    <line x1="186" y1="88" x2="200" y2="102"/>
+    <line x1="276" y1="178" x2="290" y2="192"/>
+    <line x1="290" y1="88" x2="276" y2="102"/>
+    <line x1="200" y1="178" x2="186" y2="192"/>
+  </g>
+  <g stroke="#142B4A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M400 300 L400 196" fill="none"/>
+    <ellipse cx="356" cy="238" rx="34" ry="17" fill="#81B29A" transform="rotate(-28 356 238)"/>
+    <ellipse cx="444" cy="238" rx="34" ry="17" fill="#81B29A" transform="rotate(28 444 238)"/>
+    <ellipse cx="400" cy="206" rx="17" ry="30" fill="#81B29A"/>
+    <circle cx="400" cy="158" r="26" fill="#E07A5F"/>
+    <circle cx="400" cy="158" r="11" fill="#F2CC8F"/>
+    <path d="M330 336 L470 336 L448 448 L352 448 Z" fill="#E07A5F"/>
+    <rect x="320" y="312" width="160" height="26" rx="8" fill="#B85438"/>
+  </g>
+  <g fill="#7FB3D5" stroke="#142B4A" stroke-width="6" stroke-linejoin="round">
+    <path d="M560 200 C552 186 540 194 546 206 C550 214 560 222 560 222 C560 222 570 214 574 206 C580 194 568 186 560 200 Z"/>
+    <path d="M606 268 C598 254 586 262 592 274 C596 282 606 290 606 290 C606 290 616 282 620 274 C626 262 614 254 606 268 Z"/>
+  </g>
+  <g fill="none" stroke="#81B29A" stroke-width="7" stroke-linecap="round">
+    <path d="M240 452 Q252 436 264 452"/>
+    <path d="M540 452 Q552 436 564 452"/>
+    <path d="M580 452 Q592 436 604 452"/>
+  </g>
+</svg>

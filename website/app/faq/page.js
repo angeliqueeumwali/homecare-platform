@@ -1,3 +1,5 @@
+import PageHero from "@/components/PageHero";
+
 const FAQS = [
   {
     question: "How do I request a service?",
@@ -48,16 +50,21 @@ const FAQS = [
 
 export default function FaqPage() {
   return (
-    <div className="container section">
-      <h1>Frequently asked questions</h1>
-      <dl className="faq-list" style={{ marginTop: "2rem" }}>
-        {FAQS.map((faq) => (
-          <div className="faq-item" key={faq.question}>
-            <dt>{faq.question}</dt>
-            <dd>{faq.answer}</dd>
-          </div>
-        ))}
-      </dl>
-    </div>
+    <>
+      <PageHero
+        title="Frequently asked questions"
+        lead="Answers to the most common questions about requesting services on the platform."
+      />
+      <div className="container section">
+        <dl className="faq-list">
+          {FAQS.map((faq) => (
+            <div className="faq-item" key={faq.question}>
+              <dt>{faq.question}</dt>
+              <dd>{faq.answer}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </>
   );
 }

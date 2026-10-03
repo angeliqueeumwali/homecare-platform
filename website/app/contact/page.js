@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { api } from "@/lib/api";
+import PageHero from "@/components/PageHero";
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -70,123 +71,156 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="container section">
-      <h1>Contact us</h1>
-      <p>
-        Questions about a service request, your account or
-        the platform? Send us a message.
-      </p>
-      <div className="form-card" style={{ margin: "1.5rem auto" }}>
-        {status && (
-          <div
-            className={`alert alert-${status.type}`}
-            role="alert"
-          >
-            {status.text}
+    <>
+      <PageHero
+        title="Contact us"
+        lead="Questions about a service request, your account or the platform? Send us a message."
+      />
+      <div className="container section">
+        <div className="contact-layout">
+          <div className="contact-info">
+            <h2>We are here to help</h2>
+            <p>
+              Whether you need help with an existing request,
+              your account or a question about a service
+              category, our support team reviews every message
+              sent through this form.
+            </p>
+            <ul className="contact-notes">
+              <li>
+                Messages are reviewed through the admin
+                dashboard
+              </li>
+              <li>
+                Include your request details so we can help
+                faster
+              </li>
+              <li>
+                For urgent account issues, sign in and check
+                your request status in your account
+              </li>
+            </ul>
+            <div className="contact-media">
+              <img
+                src="/images/lifestyle-care.svg"
+                alt="A caregiver and an elderly person sitting together on a bench"
+                loading="lazy"
+              />
+            </div>
           </div>
-        )}
-        <form onSubmit={handleSubmit} noValidate>
-          <div className="form-group">
-            <label className="form-label" htmlFor="name">
-              Name
-            </label>
-            <input
-              id="name"
-              className="form-control"
-              type="text"
-              value={form.name}
-              onChange={(event) =>
-                setForm({ ...form, name: event.target.value })
-              }
-              required
-            />
-            {errors.name && (
-              <p className="form-error">{errors.name}</p>
+          <div className="contact-form-wrap">
+            {status && (
+              <div
+                className={`alert alert-${status.type}`}
+                role="alert"
+              >
+                {status.text}
+              </div>
             )}
+            <form onSubmit={handleSubmit} noValidate>
+              <div className="form-group">
+                <label className="form-label" htmlFor="name">
+                  Name
+                </label>
+                <input
+                  id="name"
+                  className="form-control"
+                  type="text"
+                  value={form.name}
+                  onChange={(event) =>
+                    setForm({ ...form, name: event.target.value })
+                  }
+                  required
+                />
+                {errors.name && (
+                  <p className="form-error">{errors.name}</p>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="email">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  className="form-control"
+                  type="email"
+                  value={form.email}
+                  onChange={(event) =>
+                    setForm({ ...form, email: event.target.value })
+                  }
+                  required
+                />
+                {errors.email && (
+                  <p className="form-error">{errors.email}</p>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="subject">
+                  Subject
+                </label>
+                <input
+                  id="subject"
+                  className="form-control"
+                  type="text"
+                  value={form.subject}
+                  onChange={(event) =>
+                    setForm({ ...form, subject: event.target.value })
+                  }
+                  required
+                />
+                {errors.subject && (
+                  <p className="form-error">{errors.subject}</p>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="message">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  className="form-textarea"
+                  value={form.message}
+                  onChange={(event) =>
+                    setForm({ ...form, message: event.target.value })
+                  }
+                  required
+                />
+                {errors.message && (
+                  <p className="form-error">{errors.message}</p>
+                )}
+              </div>
+              <div
+                className="form-group"
+                style={{ position: "absolute", left: "-9999px" }}
+                aria-hidden="true"
+              >
+                <label className="form-label" htmlFor="website">
+                  Website
+                </label>
+                <input
+                  id="website"
+                  className="form-control"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={form.honeypot}
+                  onChange={(event) =>
+                    setForm({ ...form, honeypot: event.target.value })
+                  }
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn-primary btn-lg"
+                disabled={submitting}
+                style={{ width: "100%" }}
+              >
+                {submitting ? "Sending..." : "Send message"}
+              </button>
+            </form>
           </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              className="form-control"
-              type="email"
-              value={form.email}
-              onChange={(event) =>
-                setForm({ ...form, email: event.target.value })
-              }
-              required
-            />
-            {errors.email && (
-              <p className="form-error">{errors.email}</p>
-            )}
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="subject">
-              Subject
-            </label>
-            <input
-              id="subject"
-              className="form-control"
-              type="text"
-              value={form.subject}
-              onChange={(event) =>
-                setForm({ ...form, subject: event.target.value })
-              }
-              required
-            />
-            {errors.subject && (
-              <p className="form-error">{errors.subject}</p>
-            )}
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="message">
-              Message
-            </label>
-            <textarea
-              id="message"
-              className="form-textarea"
-              value={form.message}
-              onChange={(event) =>
-                setForm({ ...form, message: event.target.value })
-              }
-              required
-            />
-            {errors.message && (
-              <p className="form-error">{errors.message}</p>
-            )}
-          </div>
-          <div
-            className="form-group"
-            style={{ position: "absolute", left: "-9999px" }}
-            aria-hidden="true"
-          >
-            <label className="form-label" htmlFor="website">
-              Website
-            </label>
-            <input
-              id="website"
-              className="form-control"
-              type="text"
-              tabIndex={-1}
-              autoComplete="off"
-              value={form.honeypot}
-              onChange={(event) =>
-                setForm({ ...form, honeypot: event.target.value })
-              }
-            />
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={submitting}
-            style={{ width: "100%" }}
-          >
-            {submitting ? "Sending..." : "Send message"}
-          </button>
-        </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

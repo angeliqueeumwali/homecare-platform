@@ -74,148 +74,163 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="container section">
-      <h1>Create an account</h1>
-      <p>Register to request home services on the platform.</p>
-      <div className="form-card" style={{ margin: "1.5rem auto" }}>
-        {status && (
-          <div
-            className={`alert alert-${status.type}`}
-            role="alert"
-          >
-            {status.text}
-          </div>
-        )}
-        <form onSubmit={handleSubmit} noValidate>
-          <div className="form-group">
-            <label className="form-label" htmlFor="first_name">
-              First name
-            </label>
-            <input
-              id="first_name"
-              className="form-control"
-              type="text"
-              value={form.first_name}
-              onChange={(event) =>
-                setForm({ ...form, first_name: event.target.value })
-              }
-              required
-            />
-            {errors.first_name && (
-              <p className="form-error">{errors.first_name}</p>
-            )}
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="last_name">
-              Last name
-            </label>
-            <input
-              id="last_name"
-              className="form-control"
-              type="text"
-              value={form.last_name}
-              onChange={(event) =>
-                setForm({ ...form, last_name: event.target.value })
-              }
-              required
-            />
-            {errors.last_name && (
-              <p className="form-error">{errors.last_name}</p>
-            )}
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              className="form-control"
-              type="email"
-              value={form.email}
-              onChange={(event) =>
-                setForm({ ...form, email: event.target.value })
-              }
-              required
-              autoComplete="email"
-            />
-            {errors.email && (
-              <p className="form-error">{errors.email}</p>
-            )}
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="phone_number">
-              Phone number
-            </label>
-            <input
-              id="phone_number"
-              className="form-control"
-              type="tel"
-              value={form.phone_number}
-              onChange={(event) =>
-                setForm({ ...form, phone_number: event.target.value })
-              }
-              required
-            />
-            {errors.phone_number && (
-              <p className="form-error">{errors.phone_number}</p>
-            )}
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="password">
-              Password
-            </label>
-            <input
-              id="password"
-              className="form-control"
-              type="password"
-              value={form.password}
-              onChange={(event) =>
-                setForm({ ...form, password: event.target.value })
-              }
-              required
-              autoComplete="new-password"
-            />
-            {errors.password && (
-              <p className="form-error">{errors.password}</p>
-            )}
-            <p className="form-hint">
-              At least 8 characters.
-            </p>
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="confirm_password">
-              Confirm password
-            </label>
-            <input
-              id="confirm_password"
-              className="form-control"
-              type="password"
-              value={form.confirm_password}
-              onChange={(event) =>
-                setForm({
-                  ...form,
-                  confirm_password: event.target.value,
-                })
-              }
-              required
-              autoComplete="new-password"
-            />
-            {errors.confirm_password && (
-              <p className="form-error">{errors.confirm_password}</p>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={submitting}
-            style={{ width: "100%" }}
-          >
-            {submitting ? "Creating account..." : "Register"}
-          </button>
-        </form>
-        <p className="form-hint" style={{ marginTop: "1rem" }}>
-          Already have an account? <Link href="/login">Sign in</Link>
+    <div className="auth-layout">
+      <div className="auth-side">
+        <img
+          src="/images/auth-illustration.svg"
+          alt="Homecare Platform illustration of a cared-for home"
+        />
+        <h1>Join Homecare Platform</h1>
+        <p>
+          Create an account to request home services,
+          compare quotes and track every request.
         </p>
+      </div>
+      <div className="auth-form-wrap">
+        <div className="form-card">
+          <h1>Create an account</h1>
+          <p style={{ color: "var(--text-secondary)", marginTop: "-0.4rem" }}>
+            Register to request home services on the platform.
+          </p>
+          {status && (
+            <div
+              className={`alert alert-${status.type}`}
+              role="alert"
+            >
+              {status.text}
+            </div>
+          )}
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="form-group">
+              <label className="form-label" htmlFor="first_name">
+                First name
+              </label>
+              <input
+                id="first_name"
+                className="form-control"
+                type="text"
+                value={form.first_name}
+                onChange={(event) =>
+                  setForm({ ...form, first_name: event.target.value })
+                }
+                required
+              />
+              {errors.first_name && (
+                <p className="form-error">{errors.first_name}</p>
+              )}
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="last_name">
+                Last name
+              </label>
+              <input
+                id="last_name"
+                className="form-control"
+                type="text"
+                value={form.last_name}
+                onChange={(event) =>
+                  setForm({ ...form, last_name: event.target.value })
+                }
+                required
+              />
+              {errors.last_name && (
+                <p className="form-error">{errors.last_name}</p>
+              )}
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="email">
+                Email
+              </label>
+              <input
+                id="email"
+                className="form-control"
+                type="email"
+                value={form.email}
+                onChange={(event) =>
+                  setForm({ ...form, email: event.target.value })
+                }
+                required
+                autoComplete="email"
+              />
+              {errors.email && (
+                <p className="form-error">{errors.email}</p>
+              )}
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="phone_number">
+                Phone number
+              </label>
+              <input
+                id="phone_number"
+                className="form-control"
+                type="tel"
+                value={form.phone_number}
+                onChange={(event) =>
+                  setForm({ ...form, phone_number: event.target.value })
+                }
+                required
+              />
+              {errors.phone_number && (
+                <p className="form-error">{errors.phone_number}</p>
+              )}
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="password">
+                Password
+              </label>
+              <input
+                id="password"
+                className="form-control"
+                type="password"
+                value={form.password}
+                onChange={(event) =>
+                  setForm({ ...form, password: event.target.value })
+                }
+                required
+                autoComplete="new-password"
+              />
+              {errors.password && (
+                <p className="form-error">{errors.password}</p>
+              )}
+              <p className="form-hint">
+                At least 8 characters.
+              </p>
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="confirm_password">
+                Confirm password
+              </label>
+              <input
+                id="confirm_password"
+                className="form-control"
+                type="password"
+                value={form.confirm_password}
+                onChange={(event) =>
+                  setForm({
+                    ...form,
+                    confirm_password: event.target.value,
+                  })
+                }
+                required
+                autoComplete="new-password"
+              />
+              {errors.confirm_password && (
+                <p className="form-error">{errors.confirm_password}</p>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg"
+              disabled={submitting}
+              style={{ width: "100%" }}
+            >
+              {submitting ? "Creating account..." : "Register"}
+            </button>
+          </form>
+          <p className="form-hint" style={{ marginTop: "1.2rem", textAlign: "center" }}>
+            Already have an account? <Link href="/login">Sign in</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

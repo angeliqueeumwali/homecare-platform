@@ -85,4 +85,25 @@ describe("Navbar", () => {
     expect(authState.logout).toHaveBeenCalled();
     expect(mockPush).toHaveBeenCalledWith("/");
   });
+
+  test("toggles the mobile menu", async () => {
+    const user = userEvent.setup();
+    render(<Navbar />);
+
+    const toggle = screen.getByRole("button", {
+      name: /open menu/i,
+    });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+
+    await user.click(toggle);
+
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(toggle).toHaveAttribute("aria-label", "Close menu");
+
+    await user.click(
+      screen.getByRole("button", { name: /close menu/i })
+    );
+
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+  });
 });
