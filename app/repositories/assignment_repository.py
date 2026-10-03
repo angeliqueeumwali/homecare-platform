@@ -12,7 +12,12 @@ class AssignmentRepository:
 
     @staticmethod
     async def get_by_id(db, assignment_id):
-        r = await db.execute(select(Assignment).options(selectinload(Assignment.service_request)).where(Assignment.id == assignment_id))
+        r = await db.execute(
+            select(Assignment).options(
+                selectinload(Assignment.service_request),
+                selectinload(Assignment.service_request_item),
+            ).where(Assignment.id == assignment_id)
+        )
         return r.scalar_one_or_none()
 
     @staticmethod

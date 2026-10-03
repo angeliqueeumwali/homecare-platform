@@ -61,6 +61,19 @@ async def test_get_assignment_by_id():
 
 
 @pytest.mark.asyncio
+async def test_get_assignment_by_id_eager_loads_service_request_relationships():
+    db = db_with_one(None)
+
+    await AssignmentRepository.get_by_id(db, "assignment-id")
+
+    statement = db.execute.call_args[0][0]
+    options = getattr(statement, "_with_options", ())
+    paths = [str(option.path) for option in options]
+    assert any("Assignment.service_request ->" in path for path in paths)
+    assert any("Assignment.service_request_item ->" in path for path in paths)
+
+
+@pytest.mark.asyncio
 async def test_get_assignment_by_id_returns_none():
     db = db_with_one(None)
 

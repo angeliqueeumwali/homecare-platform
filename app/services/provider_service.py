@@ -1,7 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.enums import ProviderApprovalStatus
 from app.models.provider_profile import ProviderProfile
-from app.models.provider_service import ProviderService
+from app.models.provider_service import (
+    ProviderService as ProviderServiceModel,
+)
 from app.models.provider_location import ProviderLocation
 from app.repositories.provider_repository import ProviderRepository
 
@@ -41,10 +43,13 @@ class ProviderService:
             await db.commit()
             await db.refresh(existing)
             return existing
-        return await ProviderRepository.create_service(db, ProviderService(
-            provider_id=provider.id,
-            service_category_id=service_category_id,
-        ))
+        return await ProviderRepository.create_service(
+            db,
+            ProviderServiceModel(
+                provider_id=provider.id,
+                service_category_id=service_category_id,
+            ),
+        )
 
     @staticmethod
     async def remove_service(db, provider, service_category_id):
