@@ -1,4 +1,5 @@
 import asyncio
+import os
 import uuid
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
@@ -28,6 +29,16 @@ from app.schemas.review_schema import ReviewCreate
 from app.schemas.issue_schema import IssueCreate
 
 
+# Development-only fallback passwords for local acceptance seeding.
+# These are not secrets and must NEVER be used against a shared,
+# staging, or production database. Always set SEED_ADMIN_PASSWORD,
+# SEED_CUSTOMER_PASSWORD, and SEED_PROVIDER_PASSWORD explicitly for
+# any environment other than your local development machine.
+ADMIN_PASSWORD = os.getenv("SEED_ADMIN_PASSWORD", "local-admin-password")
+CUSTOMER_PASSWORD = os.getenv("SEED_CUSTOMER_PASSWORD", "local-customer-password")
+PROVIDER_PASSWORD = os.getenv("SEED_PROVIDER_PASSWORD", "local-provider-password")
+
+
 async def main():
     async with SessionLocal() as db:
         suffix = uuid.uuid4().hex[:8]
@@ -38,7 +49,7 @@ async def main():
             last_name="Admin",
             email=f"stage-admin-{suffix}@example.com",
             phone_number=f"071{suffix[-7:]}",
-            password_hash=hash_password("admin-accept-123"),
+            password_hash=hash_password(ADMIN_PASSWORD),
             role="ADMIN",
         )
         print("ADMIN_EMAIL", admin.email)
@@ -49,7 +60,7 @@ async def main():
             last_name="Customer",
             email=f"stage-customer-{suffix}@example.com",
             phone_number=f"072{suffix[-7:]}",
-            password_hash=hash_password("customer-accept-123"),
+            password_hash=hash_password(CUSTOMER_PASSWORD),
             role="CUSTOMER",
         )
         print("CUSTOMER_EMAIL", customer.email)
@@ -60,7 +71,7 @@ async def main():
             last_name="Provider",
             email=f"stage-provider-{suffix}@example.com",
             phone_number=f"073{suffix[-7:]}",
-            password_hash=hash_password("provider-accept-123"),
+            password_hash=hash_password(PROVIDER_PASSWORD),
             role="SERVICE_PROVIDER",
         )
         print("PROVIDER_EMAIL", provider_user.email)
