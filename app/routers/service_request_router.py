@@ -7,6 +7,7 @@ from app.models.user import User
 from app.schemas.service_request_schema import ServiceRequestCreate, ServiceRequestResponse, ServiceRequestStatusUpdate
 from app.schemas.service_request_image_schema import ServiceRequestImageResponse
 from app.services.service_request_service import ServiceRequestService
+from app.services.provider_service import ProviderService
 from app.services.service_request_image_service import ServiceRequestImageService
 from app.repositories.service_request_image_repository import ServiceRequestImageRepository
 
@@ -39,11 +40,23 @@ async def my_requests(db=Depends(get_db), current_user: User=Depends(get_current
 async def get_request(request_id, db=Depends(get_db), current_user: User=Depends(get_current_user)):
     try:
         request = await ServiceRequestService.get(db, request_id)
-        if current_user.role != UserRole.ADMIN and request.customer_id != current_user.id:
-            raise HTTPException(403, "You do not have access to this request")
-        return request
     except ValueError as e:
         raise HTTPException(404, str(e))
+
+    if current_user.role == UserRole.ADMIN or request.customer_id == current_user.id:
+        return request
+
+    if current_user.role == UserRole.SERVICE_PROVIDER:
+        try:
+            provider = await ProviderService.get_my_profile(db, current_user)
+        except ValueError:
+            raise HTTPException(403, "Provider profile not found")
+        try:
+            return await ServiceRequestService.get_for_provider(db, request_id, provider.id)
+        except PermissionError:
+            raise HTTPException(403, "You can only view requests assigned to you")
+
+    raise HTTPException(403, "You do not have access to this request")
 
 @router.patch("/{request_id}/status", response_model=ServiceRequestResponse)
 async def update_status(request_id, data: ServiceRequestStatusUpdate, db=Depends(get_db), current_user: User=Depends(get_current_user)):

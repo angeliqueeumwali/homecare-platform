@@ -1,3 +1,5 @@
+from app.models.support import ContactMessage, PasswordResetToken
+
 from app.models.user import User
 from app.models.provider_profile import ProviderProfile
 from app.models.provider_service import ProviderService

@@ -2,6 +2,7 @@ from app.core.enums import ServiceRequestItemStatus, ServiceRequestStatus
 from app.models.service_request import ServiceRequest
 from app.models.service_request_item import ServiceRequestItem
 from app.repositories.service_request_repository import ServiceRequestRepository
+from app.repositories.assignment_repository import AssignmentRepository
 from app.repositories.service_category_repository import ServiceCategoryRepository
 
 class ServiceRequestService:
@@ -35,6 +36,25 @@ class ServiceRequestService:
         request = await ServiceRequestRepository.get_by_id(db, request_id)
         if not request:
             raise ValueError("Service request not found")
+        return request
+
+    @staticmethod
+    async def get_for_provider(db, request_id, provider_id):
+        request = await ServiceRequestRepository.get_by_id(db, request_id)
+        if not request:
+            raise ValueError("Service request not found")
+
+        assignments = await AssignmentRepository.get_provider_assignments(
+            db, provider_id
+        )
+        assigned = any(
+            a.service_request_id == request.id for a in assignments
+        )
+        if not assigned:
+            raise PermissionError(
+                "You can only view requests assigned to you"
+            )
+
         return request
 
     @staticmethod

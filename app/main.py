@@ -15,6 +15,7 @@ from app.routers.quote_router import router as quote_router
 from app.routers.review_router import router as review_router
 from app.routers.service_category_router import router as service_category_router
 from app.routers.service_request_router import router as service_request_router
+from app.routers.support_router import router as support_router
 from app.routers.user_router import router as user_router
 
 
@@ -51,6 +52,7 @@ app.include_router(payment_router)
 app.include_router(notification_router)
 app.include_router(review_router)
 app.include_router(issue_router)
+app.include_router(support_router)
 
 
 @app.get("/")

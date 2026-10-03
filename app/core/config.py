@@ -43,6 +43,23 @@ class Settings:
         )
     )
 
+    PASSWORD_RESET_TOKEN_EXPIRE_MINUTES = int(
+        os.getenv("PASSWORD_RESET_TOKEN_EXPIRE_MINUTES", "30")
+    )
+
+    PASSWORD_RESET_DEV_RETURN_TOKEN = os.getenv(
+        "PASSWORD_RESET_DEV_RETURN_TOKEN",
+        "false",
+    ).lower() in {"1", "true", "yes"}
+
+    CONTACT_RATE_LIMIT_PER_HOUR = int(
+        os.getenv("CONTACT_RATE_LIMIT_PER_HOUR", "5")
+    )
+
+    CONTACT_MIN_MESSAGE_LENGTH = int(
+        os.getenv("CONTACT_MIN_MESSAGE_LENGTH", "10")
+    )
+
     @property
     def max_images_per_request(self) -> int:
         return self.MAX_IMAGES_PER_REQUEST
