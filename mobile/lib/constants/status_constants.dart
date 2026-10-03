@@ -186,11 +186,6 @@ bool isFinishedAssignmentStatus(String status) {
   return finished.contains(status.toUpperCase());
 }
 
-/// Statuses the provider app offers for an assignment in [status].
-///
-/// `PATCH /assignments/{id}/status` only validates that the value is a real
-/// `AssignmentStatus`; the backend does not enforce an order, so this list is
-/// the app's own sensible flow rather than a backend rule.
 List<String> assignmentStatusActions(String status) {
   switch (status.toUpperCase()) {
     case AssignmentStatus.pending:
@@ -211,8 +206,6 @@ List<String> assignmentStatusActions(String status) {
   }
 }
 
-/// Provider-facing labels for the status actions in
-/// [assignmentStatusActions].
 String assignmentStatusActionLabel(String status) {
   switch (status.toUpperCase()) {
     case AssignmentStatus.accepted:
@@ -232,8 +225,6 @@ String assignmentStatusActionLabel(String status) {
   }
 }
 
-/// True when the action should be confirmed before it is sent, because it
-/// closes the assignment or sends the provider on a job.
 bool assignmentStatusNeedsConfirmation(String status) {
   const confirm = <String>{
     AssignmentStatus.declined,
@@ -244,8 +235,6 @@ bool assignmentStatusNeedsConfirmation(String status) {
   return confirm.contains(status.toUpperCase());
 }
 
-/// Filter options for the provider assignments list. `null` means "no filter",
-/// which the screen labels as All.
 const List<String> assignmentStatusFilters = <String>[
   AssignmentStatus.pending,
   AssignmentStatus.accepted,
@@ -256,7 +245,6 @@ const List<String> assignmentStatusFilters = <String>[
   AssignmentStatus.cancelled,
 ];
 
-/// Short status groups used by the dashboard summary tiles.
 bool isAssignmentOpen(String status) {
   const open = <String>{
     AssignmentStatus.pending,

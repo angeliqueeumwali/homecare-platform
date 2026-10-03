@@ -6,12 +6,6 @@ import 'package:mobile/theme/colors.dart';
 import 'package:mobile/theme/spacing.dart';
 import 'package:mobile/widgets/app_widgets.dart';
 
-/// Explains the provider's real approval state and what it means.
-///
-/// The backend only approves providers through the admin endpoint, so this
-/// banner never offers a self-approval action. For a pending or rejected
-/// account it replaces the provider-only features instead of letting the
-/// provider tap into screens the API will refuse.
 class ApprovalStatusBanner extends StatelessWidget {
   final ProviderAccountState state;
   final String? businessName;
@@ -73,7 +67,9 @@ class ApprovalStatusBanner extends StatelessWidget {
                 ),
               ),
               StatusBadge(
-                status: isBlocked ? 'INACTIVE' : ProviderApprovalStatus.rejected,
+                status: isBlocked
+                    ? 'INACTIVE'
+                    : ProviderApprovalStatus.rejected,
                 customColor: accent,
               ),
             ],

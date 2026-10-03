@@ -5,11 +5,14 @@ import 'package:mobile/providers/provider_viewmodel.dart';
 import 'package:mobile/services/api_client.dart';
 import 'package:mobile/services/assignment_service.dart';
 import 'package:mobile/services/provider_service.dart';
+import 'package:mobile/services/quote_service.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockProviderService extends Mock implements ProviderService {}
 
 class MockAssignmentService extends Mock implements AssignmentService {}
+
+class MockQuoteService extends Mock implements QuoteService {}
 
 ProviderProfileModel buildProfile({String approvalStatus = 'APPROVED'}) {
   return ProviderProfileModel.fromJson({
@@ -26,12 +29,14 @@ ProviderProfileModel buildProfile({String approvalStatus = 'APPROVED'}) {
 void main() {
   late MockProviderService providerService;
   late MockAssignmentService assignmentService;
+  late MockQuoteService quoteService;
   late ProviderViewModel vm;
 
   setUp(() {
     providerService = MockProviderService();
     assignmentService = MockAssignmentService();
-    vm = ProviderViewModel(providerService, assignmentService);
+    quoteService = MockQuoteService();
+    vm = ProviderViewModel(providerService, assignmentService, quoteService);
   });
 
   group('refreshAccountState', () {

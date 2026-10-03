@@ -7,7 +7,10 @@ import 'package:mobile/screens/customer/customer_dashboard.dart';
 import 'package:mobile/screens/customer/notification_screen.dart';
 import 'package:mobile/screens/customer/profile_screen.dart';
 import 'package:mobile/screens/customer/request_history_screen.dart';
+import 'package:mobile/screens/provider/provider_assignments_screen.dart';
 import 'package:mobile/screens/provider/provider_dashboard.dart';
+import 'package:mobile/screens/provider/provider_notification_screen.dart';
+import 'package:mobile/screens/provider/provider_profile_screen.dart';
 import 'package:mobile/theme/colors.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -91,9 +94,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   List<Widget> _buildPages(bool isProvider) => isProvider
       ? [
           const ProviderDashboardScreen(),
-          ProviderAssignmentsScreen(),
-          const NotificationScreen(),
-          ProfileScreen(),
+          const ProviderAssignmentsScreen(),
+          const ProviderNotificationScreen(),
+          const ProviderProfileScreen(),
         ]
       : [
           const CustomerDashboardScreen(),

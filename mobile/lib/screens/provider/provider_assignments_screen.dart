@@ -10,11 +10,6 @@ import 'package:mobile/widgets/app_widgets.dart';
 import 'package:mobile/widgets/approval_status_banner.dart';
 import 'package:mobile/widgets/common_widgets.dart';
 
-/// The provider's own assignments, from `GET /assignments/me`.
-///
-/// The backend has no endpoint for browsing unassigned requests, so this list
-/// only ever contains work that was assigned to this provider by an
-/// administrator. Nothing is added to it locally.
 class ProviderAssignmentsScreen extends StatefulWidget {
   const ProviderAssignmentsScreen({super.key});
 
@@ -67,10 +62,13 @@ class _ProviderAssignmentsScreenState extends State<ProviderAssignmentsScreen> {
             state: vm.accountState,
             businessName: vm.profile?.businessName,
           ),
-          const AppCard(
+          AppCard(
             child: Text(
-              'Assignments are only available to approved providers.',
-              style: TextStyle(
+              vm.accountState == ProviderAccountState.none
+                  ? 'This account has no service provider profile, so the '
+                        'backend refuses assignment requests for it.'
+                  : 'Assignments are only available to approved providers.',
+              style: const TextStyle(
                 fontSize: 13,
                 color: AppColors.secondaryText,
                 height: 1.4,
@@ -141,8 +139,6 @@ class _ProviderAssignmentsScreenState extends State<ProviderAssignmentsScreen> {
   }
 }
 
-/// Search over the fields the assignment response actually carries, plus the
-/// status filter chips.
 class _AssignmentFilters extends StatelessWidget {
   final ProviderViewModel vm;
 
@@ -233,11 +229,6 @@ class _FilterChip extends StatelessWidget {
   }
 }
 
-/// One assignment row.
-///
-/// `GET /assignments/me` returns ids and a status only, so the card shows the
-/// references the API does send rather than an address or customer name it
-/// never provides.
 class ProviderAssignmentCard extends StatelessWidget {
   final AssignmentModel assignment;
 
@@ -249,7 +240,8 @@ class ProviderAssignmentCard extends StatelessWidget {
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
-      onTap: () => Navigator.pushNamed(context, '/provider/assignment/${assignment.id}'),
+      onTap: () =>
+          Navigator.pushNamed(context, '/provider/assignment/${assignment.id}'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -350,8 +342,6 @@ class ProviderAssignmentCard extends StatelessWidget {
   }
 }
 
-/// First eight characters of a UUID, which is what the old provider card
-/// showed and is enough for a provider to quote back to support.
 String shortReference(String id) {
   if (id.isEmpty) return '—';
   return id.length <= 8 ? id : id.substring(0, 8).toUpperCase();

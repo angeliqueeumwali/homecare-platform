@@ -83,8 +83,6 @@ class ProviderViewModel with ChangeNotifier {
   String? get assignmentErrorMessage => _assignmentErrorMessage;
   String? get assignmentQuery => _assignmentQuery;
 
-  /// True once a full provider load has run, so opening the dashboard does not
-  /// refetch data the session already has.
   bool get hasLoadedOnce => _hasLoadedOnce;
   bool get hasLoadedAssignments => _hasLoadedAssignments;
 
@@ -99,10 +97,6 @@ class ProviderViewModel with ChangeNotifier {
       .where((a) => a.status.toUpperCase() == AssignmentStatus.pending)
       .toList();
 
-  /// The assignments list after the search text and status filter are applied.
-  ///
-  /// The backend returns only ids and a status, so the search matches those
-  /// references rather than an address or a customer name the API never sends.
   List<AssignmentModel> get filteredAssignments {
     final query = _assignmentQuery?.trim().toLowerCase() ?? '';
     return _assignments.where((assignment) {
@@ -141,13 +135,10 @@ class ProviderViewModel with ChangeNotifier {
   bool get isLoadingQuotes => _isLoadingQuotes;
   bool get isCreatingQuote => _isCreatingQuote;
 
-  /// The request the [quotes] belong to, so one request's quotes are never
-  /// shown on another assignment.
   String? get quotesRequestId => _selectedAssignment?.serviceRequestId;
 
-  /// Quotes on this assignment that belong to the signed-in provider.
   List<QuoteModel> get myQuotes {
-    final providerId = _profile?.id;
+    final providerId = _selectedAssignment?.providerId ?? _profile?.id;
     if (providerId == null) return const [];
     return _quotes.where((q) => q.providerId == providerId).toList();
   }
@@ -170,9 +161,6 @@ class ProviderViewModel with ChangeNotifier {
     _hasLoadedOnce = true;
   }
 
-  /// Loads everything the provider home shows. For an account that is not
-  /// approved only the account state is checked, because the provider-only
-  /// endpoints would be refused.
   Future<void> loadDashboard() async {
     await refreshAccountState();
     if (_accountState != ProviderAccountState.approved) {
@@ -287,11 +275,6 @@ class ProviderViewModel with ChangeNotifier {
     }
   }
 
-  /// Loads one assignment and its quotes, both from endpoints the provider is
-  /// allowed to call.
-  ///
-  /// Returns false when the backend refused, so the screen can show the real
-  /// error instead of an empty page.
   Future<bool> loadAssignment(String id) async {
     _isLoadingAssignment = true;
     _assignmentErrorMessage = null;
@@ -330,11 +313,6 @@ class ProviderViewModel with ChangeNotifier {
     }
   }
 
-  /// Sends a status change for the open assignment and refreshes it so the
-  /// screen shows what the backend actually stored.
-  ///
-  /// Returns the API error message on failure and null on success. The caller
-  /// must not report success when this returns a message.
   Future<String?> changeAssignmentStatus(String id, String status) async {
     _isUpdatingAssignment = true;
     _assignmentErrorMessage = null;
@@ -361,8 +339,6 @@ class ProviderViewModel with ChangeNotifier {
     await changeAssignmentStatus(id, status);
   }
 
-  /// Refreshes only the currently open assignment, used after returning to the
-  /// details screen.
   Future<void> refreshSelectedAssignment() async {
     final id = _selectedAssignment?.id;
     if (id == null) return;
@@ -378,10 +354,6 @@ class ProviderViewModel with ChangeNotifier {
     }
   }
 
-  /// Creates a quote for the assignment currently open.
-  ///
-  /// The request and item ids come from the assignment, because the provider
-  /// has no endpoint for browsing requests to choose from.
   Future<String?> createQuoteForSelectedAssignment({
     required String amount,
     String currency = 'RWF',

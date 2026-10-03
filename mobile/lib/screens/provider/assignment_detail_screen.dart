@@ -12,21 +12,13 @@ import 'package:mobile/widgets/app_widgets.dart';
 import 'package:mobile/widgets/common_widgets.dart';
 import 'package:mobile/widgets/status_timeline.dart';
 
-/// One assignment, with the accept/decline and work-progress actions the
-/// backend supports through `PATCH /assignments/{id}/status`.
-///
-/// The backend refuses `GET /service-requests/{id}` for a provider, so this
-/// screen deliberately shows the assignment references and the request quotes
-/// it is allowed to read, and states plainly that the address and service items
-/// are not available. It never fills them in from another screen.
 class AssignmentDetailScreen extends StatefulWidget {
   final String assignmentId;
 
   const AssignmentDetailScreen({super.key, required this.assignmentId});
 
   @override
-  State<AssignmentDetailScreen> createState() =>
-      _AssignmentDetailScreenState();
+  State<AssignmentDetailScreen> createState() => _AssignmentDetailScreenState();
 }
 
 class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
@@ -34,7 +26,8 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => context.read<ProviderViewModel>().loadAssignment(widget.assignmentId),
+      (_) =>
+          context.read<ProviderViewModel>().loadAssignment(widget.assignmentId),
     );
   }
 
@@ -103,8 +96,6 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
     );
   }
 
-  /// Sends the status change and reports exactly what the backend answered. No
-  /// success message is shown unless the API call succeeded.
   Future<void> _runStatusAction(
     ProviderViewModel vm,
     AssignmentModel assignment,
@@ -125,17 +116,13 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
       if (confirmed != true) return;
     }
 
-    final error = await vmBefore.changeAssignmentStatus(
-      assignment.id,
-      status,
-    );
+    final error = await vmBefore.changeAssignmentStatus(assignment.id, status);
     if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          error ??
-              'Status updated to ${getStatusDisplayName(status)}',
+          error ?? 'Status updated to ${getStatusDisplayName(status)}',
         ),
         backgroundColor: error == null
             ? AppColors.successGreen
@@ -165,7 +152,9 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
             child: Text(
               confirmLabel,
               style: TextStyle(
-                color: isDestructive ? AppColors.errorRed : AppColors.darkNavyBlue,
+                color: isDestructive
+                    ? AppColors.errorRed
+                    : AppColors.darkNavyBlue,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -198,7 +187,7 @@ class _StatusHeader extends StatelessWidget {
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
-              color: AppColors.white70,
+              color: Color(0xB3FFFFFF),
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -238,10 +227,7 @@ class _ReferenceCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          _DetailRow(
-            label: 'Assignment',
-            value: shortReference(assignment.id),
-          ),
+          _DetailRow(label: 'Assignment', value: shortReference(assignment.id)),
           _DetailRow(
             label: 'Service request',
             value: shortReference(assignment.serviceRequestId),
@@ -295,7 +281,6 @@ class _DetailRow extends StatelessWidget {
   }
 }
 
-/// Progress through the statuses the backend records on an assignment.
 class _StatusTimelineCard extends StatelessWidget {
   final AssignmentModel assignment;
 
@@ -319,12 +304,18 @@ class _StatusTimelineCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          if (isTerminal || index == -1)
+          if (isTerminal)
             Text(
-              isTerminal
-                  ? 'This assignment is ${getStatusDisplayName(assignment.status).toLowerCase()} and will not change again.'
-                  : 'The backend reported "${assignment.status}", which is '
-                        'not part of the normal job flow.',
+              'This assignment is ${getStatusDisplayName(assignment.status).toLowerCase()} and will not change again.',
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppColors.secondaryText,
+                height: 1.4,
+              ),
+            )
+          else if (index == -1)
+            Text(
+              'The backend reported "${assignment.status}", which is not part of the normal job flow.',
               style: const TextStyle(
                 fontSize: 13,
                 color: AppColors.secondaryText,
@@ -332,20 +323,16 @@ class _StatusTimelineCard extends StatelessWidget {
               ),
             )
           else
-            for (var i = 0; i < assignmentTimelineSteps.length; i++)
-              StatusTimelineRow(
-                label: getStatusDisplayName(assignmentTimelineSteps[i]),
-                isComplete: i < index,
-                isCurrent: i == index,
-                showLine: i < assignmentTimelineSteps.length - 1,
-              ),
+            StatusTimeline(
+              currentStatus: assignment.status,
+              steps: assignmentTimelineSteps,
+            ),
         ],
       ),
     );
   }
 }
 
-/// Says what the provider cannot see, instead of hiding the gap.
 class _UnavailableRequestNotice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -379,7 +366,6 @@ class _UnavailableRequestNotice extends StatelessWidget {
   }
 }
 
-/// Accept, decline and work-progress buttons for the current status.
 class _ActionCard extends StatelessWidget {
   final AssignmentModel assignment;
   final bool isUpdating;
@@ -394,8 +380,8 @@ class _ActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final actions = assignmentStatusActions(assignment.status);
-    final isDeclineOnly = actions.length == 1 &&
-        actions.first == AssignmentStatus.declined;
+    final isDeclineOnly =
+        actions.length == 1 && actions.first == AssignmentStatus.declined;
 
     return AppCard(
       child: Column(
@@ -455,21 +441,16 @@ class _ActionButton extends StatelessWidget {
     return AppButton(
       text: assignmentStatusActionLabel(status),
       isLoading: isUpdating && isPrimary,
-      variant: destructive
-          ? AppButtonVariant.outlined
-          : AppButtonVariant.filled,
-      backgroundColor: destructive ? AppColors.errorRed : AppColors.darkNavyBlue,
+      outlined: destructive,
+      backgroundColor: destructive
+          ? AppColors.errorRed
+          : AppColors.darkNavyBlue,
       textColor: destructive ? AppColors.errorRed : AppColors.white,
-      borderColor: destructive ? AppColors.errorRed : null,
       onPressed: isUpdating ? null : onTap,
     );
   }
 }
 
-/// Quotes on this request, from `GET /quotes/request/{id}`.
-///
-/// The endpoint returns every provider's quote for the request, so the provider
-/// own quotes are separated from the others and only theirs can be added to.
 class _QuotesCard extends StatelessWidget {
   final ProviderViewModel vm;
 
@@ -477,7 +458,8 @@ class _QuotesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canQuote = vm.selectedAssignment != null &&
+    final canQuote =
+        vm.selectedAssignment != null &&
         !isFinishedAssignmentStatus(vm.selectedAssignment!.status);
 
     return AppCard(
@@ -518,9 +500,12 @@ class _QuotesCard extends StatelessWidget {
               child: AppLoadingIndicator(message: 'Loading quotes'),
             )
           else if (vm.errorMessage != null && vm.quotes.isEmpty)
-            ErrorView(message: vm.errorMessage!, onRetry: () async {
-              await vm.loadAssignment(vm.selectedAssignment!.id);
-            })
+            ErrorView(
+              message: vm.errorMessage!,
+              onRetry: () async {
+                await vm.loadAssignment(vm.selectedAssignment!.id);
+              },
+            )
           else if (vm.quotes.isEmpty)
             const Text(
               'No quotes have been sent for this request yet.',
@@ -565,7 +550,10 @@ class _QuotesCard extends StatelessWidget {
     );
   }
 
-  Future<void> _openQuoteSheet(BuildContext context, ProviderViewModel vm) async {
+  Future<void> _openQuoteSheet(
+    BuildContext context,
+    ProviderViewModel vm,
+  ) async {
     final created = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
@@ -596,7 +584,11 @@ class ProviderQuoteTile extends StatelessWidget {
   final QuoteModel quote;
   final bool isMine;
 
-  const ProviderQuoteTile({super.key, required this.quote, required this.isMine});
+  const ProviderQuoteTile({
+    super.key,
+    required this.quote,
+    required this.isMine,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -648,8 +640,6 @@ class ProviderQuoteTile extends StatelessWidget {
   }
 }
 
-/// Create-quote form. The request and item ids come from the assignment, since
-/// a provider has no endpoint for browsing requests.
 class ProviderQuoteForm extends StatefulWidget {
   final ProviderViewModel vm;
 

@@ -173,8 +173,6 @@ class StatusBadge extends StatelessWidget {
   final Color? customColor;
   final double fontSize;
 
-  /// Renders on a dark surface such as a navy header, where the pale tinted
-  /// background of the normal badge would disappear.
   final bool invert;
 
   const StatusBadge({

@@ -8,18 +8,13 @@ import 'package:mobile/providers/provider_viewmodel.dart';
 import 'package:mobile/providers/service_provider.dart';
 import 'package:mobile/theme/colors.dart';
 import 'package:mobile/theme/spacing.dart';
+import 'package:mobile/screens/provider/provider_assignments_screen.dart';
 import 'package:mobile/widgets/app_widgets.dart';
 import 'package:mobile/widgets/approval_status_banner.dart';
 import 'package:mobile/widgets/common_widgets.dart';
 import 'package:mobile/widgets/service_category_widgets.dart';
 import 'package:mobile/models/service_request_model.dart';
 
-/// Provider home.
-///
-/// Every number on this screen is counted from `GET /assignments/me` or read
-/// straight from `GET /providers/me`. Nothing is estimated, and features that
-/// need an approved provider are hidden while the account is pending or
-/// rejected.
 class ProviderDashboardScreen extends StatefulWidget {
   const ProviderDashboardScreen({super.key});
 
@@ -49,7 +44,9 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen> {
       backgroundColor: AppColors.lightGrey,
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: vm.isApprovedProvider ? vm.loadDashboard : vm.refreshAccountState,
+          onRefresh: vm.isApprovedProvider
+              ? vm.loadDashboard
+              : vm.refreshAccountState,
           child: ListView(
             padding: const EdgeInsets.only(bottom: AppSpacing.xl),
             children: [
@@ -128,8 +125,6 @@ class _ProviderDashboardScreenState extends State<ProviderDashboardScreen> {
   }
 }
 
-/// Counts of the provider's real assignments. `All` is the total from the API
-/// response, so the tiles always agree with the assignments screen.
 class _AssignmentSummaryRow extends StatelessWidget {
   final ProviderViewModel vm;
 
@@ -295,7 +290,6 @@ class _QuickLink extends StatelessWidget {
   }
 }
 
-/// The jobs a provider should act on first, newest pending work first.
 class _NextJobsSection extends StatelessWidget {
   final ProviderViewModel vm;
 
@@ -355,8 +349,6 @@ class _NextJobsSection extends StatelessWidget {
   }
 }
 
-/// The services the provider offers, from `GET /providers/me/services` joined
-/// with the category names the API returns.
 class _ServicesSummary extends StatelessWidget {
   const _ServicesSummary();
 
@@ -400,8 +392,7 @@ class _ServicesSummary extends StatelessWidget {
               children: [
                 for (final category in offered.take(6))
                   _ServiceChip(category: category),
-                if (offered.length > 6)
-                  _MoreChip(count: offered.length - 6),
+                if (offered.length > 6) _MoreChip(count: offered.length - 6),
               ],
             ),
           ),

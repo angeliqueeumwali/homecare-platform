@@ -25,7 +25,14 @@ import 'package:mobile/screens/customer/request_history_screen.dart';
 import 'package:mobile/screens/customer/service_categories_screen.dart';
 import 'package:mobile/screens/customer/service_request_screen.dart';
 import 'package:mobile/screens/main_navigation.dart';
-import 'package:mobile/screens/provider/provider_dashboard.dart';
+import 'package:mobile/screens/provider/assignment_detail_screen.dart';
+import 'package:mobile/screens/provider/provider_assignments_screen.dart';
+import 'package:mobile/screens/provider/provider_location_screen.dart';
+import 'package:mobile/screens/provider/provider_notification_screen.dart';
+import 'package:mobile/screens/provider/provider_profile_screen.dart';
+import 'package:mobile/screens/provider/provider_reviews_screen.dart';
+import 'package:mobile/screens/provider/provider_services_screen.dart';
+import 'package:mobile/screens/provider/provider_settings_screen.dart';
 import 'package:mobile/models/service_request_model.dart';
 import 'package:mobile/providers/review_viewmodel.dart';
 import 'package:mobile/services/review_service.dart';
@@ -135,7 +142,7 @@ class HomecareApp extends StatelessWidget {
                   ),
                 );
               }
-              if (settings.name?.startsWith('/assignment/') == true) {
+              if (settings.name?.startsWith('/provider/assignment/') == true) {
                 final id = settings.name!.split('/').last;
                 return MaterialPageRoute(
                   builder: (_) => AssignmentDetailScreen(assignmentId: id),
@@ -164,6 +171,12 @@ class HomecareApp extends StatelessWidget {
               '/provider/profile': (context) => const ProviderProfileScreen(),
               '/provider/services': (context) => const ProviderServicesScreen(),
               '/provider/location': (context) => const ProviderLocationScreen(),
+              '/provider/assignments': (context) =>
+                  const ProviderAssignmentsScreen(),
+              '/provider/notifications': (context) =>
+                  const ProviderNotificationScreen(),
+              '/provider/settings': (context) => const ProviderSettingsScreen(),
+              '/provider/reviews': (context) => const ProviderReviewsScreen(),
             },
           );
         },

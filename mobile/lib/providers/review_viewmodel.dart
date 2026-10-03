@@ -25,8 +25,6 @@ class ReviewViewModel with ChangeNotifier {
   bool get isLoadingMyReviews => _isLoadingMyReviews;
   String? get errorMessage => _errorMessage;
 
-  /// Reviews customers left about this provider. Only ever what
-  /// `GET /reviews/me/provider` returned.
   List<ReviewModel> get myProviderReviews => _myProviderReviews;
 
   /// Assignment ids already reviewed in this session, so the UI does not offer
