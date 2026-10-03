@@ -33,7 +33,9 @@ I am building this project to practice backend development, database management,
 - Issue reporting
 - Admin management
 
-## Project Structure
+## Architecture
+
+The backend uses a layered architecture: routers handle HTTP requests, services contain the business logic, repositories manage database access, and models and schemas define the data.
 
 ```text
 app/
@@ -51,16 +53,11 @@ tests/
 └── repositories/
 ```
 
-The project separates routing, business logic, database operations, models, and schemas to keep the backend organized and easier to maintain.
+Authentication uses JWT access tokens with role-based access control (CUSTOMER, SERVICE_PROVIDER, ADMIN).
 
 ## Running the Project
 
-Clone the repository:
-
-```bash
-git clone git@github.com:angeliqueeumwali/homecare-platform-backend.git
-cd homecare-platform-backend
-```
+The backend lives in the `backend/` directory of the Homecare Platform project.
 
 Create and activate a virtual environment:
 
@@ -75,7 +72,13 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Configure your environment variables in a `.env` file.
+Configure your environment variables in a `.env` file (see `.env.example` for the required variables, including the PostgreSQL connection settings and `JWT_SECRET_KEY`).
+
+Create the database schema:
+
+```bash
+alembic upgrade head
+```
 
 Start the development server:
 
@@ -97,7 +100,7 @@ Run the tests with:
 pytest
 ```
 
-The current test suite includes health router, health service, and database connection tests.
+The test suite includes 316 tests covering the routers, services, and repositories.
 
 ## Project Status
 
