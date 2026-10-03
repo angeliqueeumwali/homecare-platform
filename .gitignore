@@ -59,11 +59,21 @@ captures/
 *.aab
 *.ipa
 
-# ---- Nested repository ----
-# backend/ is its own Git repository with its own history and remote
-# (https://github.com/angeliqueeumwali/homecare-platform-backend.git).
-# It is versioned independently; see README or `git -C backend log`.
-backend/
+# ---- Backend local artifacts ----
+backend/.env
+backend/.env.*
+!backend/.env.example
+backend/.venv/
+backend/venv/
+backend/__pycache__/
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.coverage
+backend/coverage.xml
+backend/htmlcov/
+
+# ---- Agent tooling ----
+.kilo/
 
 # ---- OS ----
 .DS_Store
