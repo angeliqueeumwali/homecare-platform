@@ -1,0 +1,16 @@
+from app.models.support import ContactMessage, PasswordResetToken
+
+from app.models.user import User
+from app.models.provider_profile import ProviderProfile
+from app.models.provider_service import ProviderService
+from app.models.provider_location import ProviderLocation
+from app.models.service_category import ServiceCategory
+from app.models.service_request import ServiceRequest
+from app.models.service_request_item import ServiceRequestItem
+from app.models.service_request_image import ServiceRequestImage
+from app.models.assignment import Assignment
+from app.models.quote import Quote
+from app.models.payment import Payment
+from app.models.notification import Notification
+from app.models.review import Review
+from app.models.issue import Issue
