@@ -4,10 +4,7 @@ Pre-deployment requirements for the Homecare Platform. **Nothing is deployed yet
 
 ## Repository layout (Git)
 
-The project is versioned as **two separate Git repositories** that must be pushed independently:
-
-- Root repository: `dashboard/`, `website/`, `mobile/`, `docs/`, `README.md`
-- `backend/`: independent repository with its own history and remote
+The project is a single unified Git repository containing `backend/`, `dashboard/`, `website/`, `mobile/`, `docs/`, and `README.md`. The full backend commit history is preserved inside the unified repository under the `backend/` prefix.
 
 ## 1. PostgreSQL
 
@@ -16,6 +13,7 @@ The project is versioned as **two separate Git repositories** that must be pushe
 - Required environment variables (see `backend/.env.example`):
   - `DATABASE_HOST`, `DATABASE_PORT` (default 5432), `DATABASE_NAME`, `DATABASE_USER`, `DATABASE_PASSWORD`
 - The backend builds the connection string from these variables (`postgresql+asyncpg://...`); there is no default database URL, so the backend will not start without them.
+- `DATABASE_SSLMODE` (default `disable`): set to `require` for TLS-only providers such as Neon; keep `disable` for a local PostgreSQL without SSL. The same setting is applied to the Alembic migration engine.
 
 ## 2. FastAPI backend
 
@@ -31,7 +29,7 @@ Environment variables required:
 - `CONTACT_RATE_LIMIT_PER_HOUR` (default 5), `CONTACT_MIN_MESSAGE_LENGTH` (default 10)
 
 Deployment-specific configuration required:
-- **CORS**: `app/main.py` currently sets `allow_origins=["*"]` together with `allow_credentials=True`. Before going live, restrict `allow_origins` to the exact deployed origins of the dashboard and the public website (for example `https://dashboard.example.com` and `https://www.example.com`). Do not ship the wildcard with credentials enabled in production.
+- **CORS**: `CORS_ALLOWED_ORIGINS` (comma-separated, default `http://localhost:3000,http://localhost:3001`). Before going live, set it to the exact deployed origins of the dashboard and the public website (for example `https://www.example.com,https://dashboard.example.com`). The wildcard `allow_origins=["*"]` is not used; credentials are enabled, so the origin list must be explicit.
 
 Not currently implemented:
 - **Email delivery** (SMTP): password-reset and contact-form endpoints persist records and honestly report `email_delivery_configured: false`. Wire an SMTP provider before these emails are needed.

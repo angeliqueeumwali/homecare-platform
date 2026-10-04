@@ -60,6 +60,17 @@ class Settings:
         os.getenv("CONTACT_MIN_MESSAGE_LENGTH", "10")
     )
 
+    DATABASE_SSLMODE = os.getenv("DATABASE_SSLMODE", "disable")
+
+    CORS_ALLOWED_ORIGINS = [
+        origin.strip()
+        for origin in os.getenv(
+            "CORS_ALLOWED_ORIGINS",
+            "http://localhost:3000,http://localhost:3001",
+        ).split(",")
+        if origin.strip()
+    ]
+
     @property
     def max_images_per_request(self) -> int:
         return self.MAX_IMAGES_PER_REQUEST
